@@ -4,7 +4,7 @@ using static terminal_ships.Program.ShipsGame;
 namespace terminal_ships {
     internal class Program {
         const string Name = "terminal-ships";
-        const string Version = "v1.0.0";
+        const string Version = "v1.0.1";
         static class Consts {
             public static (int, int) ShipCountRange { get; } = (2, 4);
             public static (int, int) ShipSizeXRange { get; } = (2, 4);
@@ -57,9 +57,9 @@ Press any key to continue . . . ");
                 AttemptsLeft = Consts.MaxTries;
                 CurPos = new(0, 0);
                 GameEnd = false;
+                Ships = new();
 
                 // generate random ships
-                Ships = new();
                 int shipsToAddCount = RandomGen.Next(Consts.ShipCountRange.Item1, Consts.ShipCountRange.Item2 + 1);
                 foreach (int i in Enumerable.Range(0, shipsToAddCount)) {
                     int shipSizeX = RandomGen.Next(Consts.ShipSizeXRange.Item1, Consts.ShipSizeXRange.Item2 + 1);
@@ -304,7 +304,7 @@ Press any key to continue . . . ");
             int loopCount = game.Grid.GetLength(1);
             foreach (int i in Enumerable.Range(0, loopCount)) {
                 output.Insert(i,
-                    new(loopingAlphabet[0].ToString() + (alphabetFullLoopCount == 0 ? " " : "."),
+                    new(loopingAlphabet[0].ToString() + (alphabetFullLoopCount == 0 ? " " : "'"),
                     i == cursor.X ? currentPosColor : ConsoleColor.Gray)
                 );
                 List<char> alphabetList = loopingAlphabet.ToList();
@@ -325,8 +325,8 @@ Press any key to continue . . . ");
                         int displayNum = (line % 9) + 1;
                         if (displayNum == 1) numbersFullLoopCount++;
                         char spaceAfterNumber = ' ';
-                        if (numbersFullLoopCount == 1) spaceAfterNumber = '.';
-                        if (numbersFullLoopCount > 1) spaceAfterNumber = ',';
+                        if (numbersFullLoopCount == 1) spaceAfterNumber = '\'';
+                        if (numbersFullLoopCount > 1) spaceAfterNumber = '"';
                         output.Insert(i + 1,
                             new(displayNum.ToString() + spaceAfterNumber,
                             line == cursor.Y ? currentPosColor : ConsoleColor.Gray)
