@@ -5,4 +5,4 @@
 
 <br>
 
-<a href="#/"><img src="https://github.com/MP3Martin/terminal-ships/assets/60501493/19f38cfb-40ea-4847-be3f-d83294b6fc63" style="width:200px;" /></a>
+<a href="#/"><img src="https://github.com/MP3Martin/terminal-ships/assets/60501493/603075f9-761f-4029-b184-870d92cbb587" style="width:200px;"/></a>
