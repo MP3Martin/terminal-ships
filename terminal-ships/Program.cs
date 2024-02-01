@@ -4,7 +4,7 @@ using static terminal_ships.Program.ShipsGame;
 namespace terminal_ships {
     internal class Program {
         const string Name = "terminal-ships";
-        const string Version = "v1.0.1";
+        const string Version = "v1.0.2";
         static class Consts {
             public static (int, int) ShipCountRange { get; } = (2, 4);
             public static (int, int) ShipSizeXRange { get; } = (2, 4);
@@ -95,10 +95,10 @@ Press any key to continue . . . ");
                 Console.Write("\nYou ");
                 if (shotSuccess) {
                     Console.ForegroundColor = ConsoleColor.Green;
-                    Console.Write("WON");
+                    Console.Write("WIN");
                 } else {
                     Console.ForegroundColor = ConsoleColor.Red;
-                    Console.Write("LOST");
+                    Console.Write("LOSE");
                 }
                 Console.ForegroundColor = ConsoleColor.White;
                 int attempts = Consts.MaxTries - AttemptsLeft;
