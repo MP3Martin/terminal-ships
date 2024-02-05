@@ -4,7 +4,7 @@ using static terminal_ships.Program.ShipsGame;
 namespace terminal_ships {
     internal class Program {
         const string Name = "terminal-ships";
-        const string Version = "v1.0.2";
+        const string Version = "v1.0.3";
         static class Consts {
             public static (int, int) ShipCountRange { get; } = (2, 4);
             public static (int, int) ShipSizeXRange { get; } = (2, 4);
@@ -225,17 +225,20 @@ Press any key to continue . . . ");
                     allShipCoords.AddRange(shipItem.CoordList);
                 }
                 int tries = 0;
-                Coords tryShipCoords;
+                Coords newShipCoords;
                 while (tries < ((game.Grid.GetLength(0) + game.Grid.GetLength(1)) * 3)) {
-                    tryShipCoords = new(
+                    newShipCoords = new(
                         game.RandomGen.Next(0, (grid.GetLength(1) - ship.SizeX) + 1),
                         game.RandomGen.Next(0, (grid.GetLength(0) - ship.SizeY) + 1)
                     );
-                    if (!allShipCoords.Contains(tryShipCoords)) return tryShipCoords;
+                    Ship newShip = new(ship.SizeX, ship.SizeY, newShipCoords);
+                    List<Coords> allNewShipCoords = newShip.CoordList;
+                    // Return the new coords if the new ship's coordinates don't overlap with any other ship's coordinates
+                    if (!allShipCoords.Intersect(allNewShipCoords).Any()) return newShipCoords;
                     tries++;
                 }
-                tryShipCoords = new(0, 0);
-                return tryShipCoords;
+                newShipCoords = new(0, 0);
+                return newShipCoords;
             }
 
             public enum GridCellValue {
