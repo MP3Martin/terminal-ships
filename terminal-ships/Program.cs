@@ -4,7 +4,7 @@ using static terminal_ships.Program.ShipsGame;
 namespace terminal_ships {
     internal class Program {
         const string Name = "terminal-ships";
-        const string Version = "v1.0.4";
+        const string Version = "v1.0.5";
         static class Consts {
             public static (int, int) ShipCountRange { get; } = (2, 4);
             public static (int, int) ShipSizeXRange { get; } = (2, 4);
@@ -50,6 +50,7 @@ Press any key to continue . . . ");
             }
             public GridCellValue[,] Grid = new GridCellValue[0, 0];
             public List<Ship> Ships = new();
+            public List<Coords> MissedCoords = new();
             public bool GameEnd = false;
             public int AttemptsLeft;
 
@@ -61,6 +62,7 @@ Press any key to continue . . . ");
                 CurPos = new(0, 0);
                 GameEnd = false;
                 Ships = new();
+                MissedCoords = new();
 
                 // generate random ships
                 int shipsToAddCount = RandomGen.Next(Consts.ShipCountRange.Item1, Consts.ShipCountRange.Item2 + 1);
@@ -77,6 +79,7 @@ Press any key to continue . . . ");
                     UpdateTerminal();
                     AttemptsLeft--;
                     if (!shotSuccess) {
+                        MissedCoords.Add(CurPos);
                         if (AttemptsLeft <= 0) break;
                         ShowInfoScreen(new List<StringColorPair> {
                             new("You MISSED! You have ", ConsoleColor.Gray),
@@ -200,7 +203,7 @@ Press any key to continue . . . ");
             public void UpdateTerminal() {
                 //Console.Clear();
                 Console.SetCursorPosition(0, 0);
-                UpdateGrid(ref Grid, Ships);
+                UpdateGrid(ref Grid, Ships, MissedCoords);
                 PrintColoredPairs(CreateGridString(Grid, this, CurPos));
             }
 
@@ -211,13 +214,16 @@ Press any key to continue . . . ");
                 return null;
             }
 
-            public static void UpdateGrid(ref GridCellValue[,] grid, List<Ship> ships) {
+            public static void UpdateGrid(ref GridCellValue[,] grid, List<Ship> ships, List<Coords> missedCoords) {
                 Array.Clear(grid);
                 foreach (var ship in ships) {
                     List<Coords> shipCoords = ship.CoordList;
                     foreach (var coords in shipCoords) {
                         GridCellValue cellValue = ship.Shot ? GridCellValue.ShotShip : GridCellValue.Ship;
                         grid[coords.Y, coords.X] = cellValue;
+                    }
+                    foreach (var coords in missedCoords) {
+                        grid[coords.Y, coords.X] = GridCellValue.Missed;
                     }
                 }
             }
@@ -248,7 +254,8 @@ Press any key to continue . . . ");
                 None,
                 Ship,
                 ShotShip,
-                Cursor
+                Cursor,
+                Missed
             }
 
             public static void ShowInfoScreen(List<StringColorPair> stringColorPairs) {
@@ -380,7 +387,8 @@ Press any key to continue . . . ");
                 { GridCellValue.None, new("▀ ", ConsoleColor.DarkGray)},
                 { GridCellValue.Ship, new("▀ ", ConsoleColor.DarkCyan)},
                 { GridCellValue.ShotShip, new("▀ ", ConsoleColor.Green)},
-                { GridCellValue.Cursor, new("▀ ", ConsoleColor.DarkYellow)}
+                { GridCellValue.Cursor, new("▀ ", ConsoleColor.DarkYellow)},
+                { GridCellValue.Missed, new("▀ ", ConsoleColor.Red)}
             };
         }
 
