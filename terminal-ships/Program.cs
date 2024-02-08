@@ -4,7 +4,7 @@ using static terminal_ships.Program.ShipsGame;
 namespace terminal_ships {
     internal class Program {
         const string Name = "terminal-ships";
-        const string Version = "v1.0.3";
+        const string Version = "v1.0.4";
         static class Consts {
             public static (int, int) ShipCountRange { get; } = (2, 4);
             public static (int, int) ShipSizeXRange { get; } = (2, 4);
@@ -21,6 +21,9 @@ namespace terminal_ships {
 ### Controls:
  - WASD or ↑←↓→ to move the cursor
  - ENTER or SPACE to ""click""
+
+### How to play:
+ - You have 3 attempts to shoot at least one ship
 
 Press any key to continue . . . ");
             Console.ReadKey(true);
@@ -261,7 +264,6 @@ Press any key to continue . . . ");
                 Console.Clear();
             }
 
-
             public static void ShowInfoScreen(string text) {
                 ShowInfoScreen(new List<StringColorPair>() { new(text) });
             }
@@ -343,7 +345,6 @@ Press any key to continue . . . ");
             if (output.Last().Str == "\n") output.RemoveAt(output.Count - 1);
             return output;
         }
-
 
         public class Ship {
             public Ship(int sizeX, int sizeY, Coords? coords = null) {
